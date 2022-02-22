@@ -1,7 +1,7 @@
 {
-  "name": "@storybook/mdx1-csf-loader",
+  "name": "@storybook/mdx1-csf",
   "version": "0.0.0",
-  "description": "MDXv1 to CSF webpack loader and compiler",
+  "description": "MDXv1 to CSF webpack compiler and loader",
   "repository": {
     "type": "git",
     "url": "https://github.com/storybookjs/csf-mdx1"
@@ -78,6 +78,7 @@
     "jest": "^27.0.6",
     "jest-environment-jsdom": "^27.0.6",
     "lint-staged": ">=10",
+    "loader-utils": "^2.0.0",
     "prompts": "^2.4.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

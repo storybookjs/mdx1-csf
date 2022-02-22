@@ -25,10 +25,7 @@ module.exports = {
           },
         },
         {
-          loader: require.resolve('@mdx-js/loader'),
-          options: {
-            compilers: [createCompiler({})],
-          },
+          loader: require.resolve('../loader'),
         },
       ],
     });
