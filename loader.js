@@ -20,7 +20,9 @@ const loader = async function (content) {
   const options = Object.assign({}, queryOptions, {
     filepath: this.resourcePath,
   });
-  options.compilers = [createCompiler(options), ...(options.compilers || [])];
+  if (!options.skipCsf) {
+    options.compilers = [createCompiler(options), ...(options.compilers || [])];
+  }
 
   let result;
 
