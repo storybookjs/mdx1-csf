@@ -43,6 +43,7 @@
     "@mdx-js/mdx": "^1.6.22",
     "@types/lodash": "^4.14.167",
     "js-string-escape": "^1.0.1",
+    "loader-utils": "^2.0.0",
     "lodash": "^4.17.21",
     "prettier": ">=2.2.1 <=2.3.0",
     "ts-dedent": "^2.0.0"
@@ -78,7 +79,6 @@
     "jest": "^27.0.6",
     "jest-environment-jsdom": "^27.0.6",
     "lint-staged": ">=10",
-    "loader-utils": "^2.0.0",
     "prompts": "^2.4.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
