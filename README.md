@@ -1,87 +1,71 @@
-# Storybook Library Kit
+## @storybook/mdx1-csf
 
-Simplify the creation of Storybook libraries
+Storybook's `mdx1-csf` is a compiler that turns MDXv1 input into CSF output.
 
-- 📝 Live-editing in development
-- ⚛️ React/JSX support
-- 📦 Transpiling and bundling with Babel
-- 🚢 Release management with [Auto](https://github.com/intuit/auto)
-- 🧺 Boilerplate and sample code + Jest tests
-- 📕 Storybook example
-- 👷 Github workflows (test, release, linear)
-- 🖼 Github templates (issues, pull request)
-- 🛠 Husky + Lint-staged + Prettier + ESLint
-- 🛄 ESM support
-- 🛂 TypeScript
+For example, the following input:
 
-> ⚠️ This template is intended to help bootstrap libraries and not addons. Please check [Storybook's addon kit](https://github.com/storybookjs/addon-kit) for addons instead!
+```mdx
+import { Meta, Story } from '@storybook/addon-docs';
 
-## Getting Started
+<Meta title="atoms/Button" />
 
-Click the **Use this template** button to get started.
-
-![](https://user-images.githubusercontent.com/1671563/154354190-e145b3d1-7ca9-4243-afac-96e3c39cb895.gif)
-
-Clone your repository and install dependencies.
-
-```sh
-yarn
+<Story name="Bar">
+  <Button>hello</Button>
+</Story>
 ```
 
-After installing the dependencies, you will be onboarded with some questions to help setup the project. After answering them, the project will fill in the necessary info, delete the unnecessary code and create an initial commit with everything ready for you to succeed!
+Might be transformed into the following CSF (over-simplified):
 
-### Development scripts
+```js
+export default {
+  title: 'atoms/Button',
+};
 
-- `yarn start` runs babel in watch mode and starts Storybook
-- `yarn build` build and package your library code
-
-## Release Management
-
-### Setup
-
-This project is configured to use [auto](https://github.com/intuit/auto) for release management. It generates a changelog and pushes it to both GitHub and npm. Therefore, you need to configure access to both:
-
-- [`NPM_TOKEN`](https://docs.npmjs.com/creating-and-viewing-access-tokens#creating-access-tokens) Create a token with both _Read and Publish_ permissions.
-- [`GH_TOKEN`](https://github.com/settings/tokens) Create a token with the `repo` scope.
-
-#### Local
-
-To use `auto` locally create a `.env` file at the root of your project and add your tokens to it:
-
-```bash
-GH_TOKEN=<value you just got from GitHub>
-NPM_TOKEN=<value you just got from npm>
+export const Bar = () => <Button>hello</Button>;
 ```
 
-Lastly, **create labels on GitHub**. You’ll use these labels in the future when making changes to the package.
+## API
 
-```bash
-npx auto create-labels
+This library exports three functions to compile MDX: `compile`, `compileSync`, and `createCompiler`.
+
+### compile
+
+Asynchronously compile a string:
+
+```js
+const code = '# hello\n\nworld';
+const output = await compile(code);
 ```
 
-If you check on GitHub, you’ll now see a set of labels that `auto` would like you to use. Use these to tag future pull requests.
+### compileSync
 
-#### GitHub Actions
+Synchronously compile a string:
 
-This template comes with GitHub actions already set up to publish your library anytime someone pushes to your repository.
-
-Go to `Settings > Secrets`, click `New repository secret`, and add your `NPM_TOKEN`.
-
-### Creating a release
-
-To create a release locally you can run the following command, otherwise the GitHub action will make the release for you.
-
-```sh
-yarn release
+```js
+const code = '# hello\n\nworld';
+const output = compileSync(code);
 ```
 
-That will:
+### createCompiler
 
-- Build and package the addon code
-- Bump the version
-- Push a release to GitHub and npm
-- Push a changelog to GitHub
+Create a compiler plugin for for MDXv1:
 
-### Credits
+```js
+import mdx from '@mdx-js/mdx';
+import { createCompiler } from '@storybook/mdx1-csf';
 
-This project is highly inspired by [Storybook's addon kit](https://github.com/storybookjs/addon-kit).
+const code = '# hello\n\nworld';
+mdx.sync(code, { compilers: [createCompiler()] });
+```
+
+## Contributing
+
+We welcome contributions to Storybook!
+
+- 📥 Pull requests and 🌟 Stars are always welcome.
+- Read our [contributing guide](CONTRIBUTING.md) to get started,
+  or find us on [Discord](https://discord.gg/storybook), we will take the time to guide you
+
+## License
+
+[MIT](https://github.com/storybookjs/csf-mdx1/blob/main/LICENSE)
