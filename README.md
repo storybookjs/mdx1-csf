@@ -33,6 +33,8 @@ This library exports three functions to compile MDX: `compile`, `compileSync`, a
 Asynchronously compile a string:
 
 ```js
+import { compile } from '@storybook/mdx1-csf';
+
 const code = '# hello\n\nworld';
 const output = await compile(code);
 ```
@@ -42,6 +44,8 @@ const output = await compile(code);
 Synchronously compile a string:
 
 ```js
+import { compileSync } from '@storybook/mdx1-csf';
+
 const code = '# hello\n\nworld';
 const output = compileSync(code);
 ```
