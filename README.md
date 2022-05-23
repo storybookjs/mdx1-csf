@@ -62,6 +62,28 @@ const code = '# hello\n\nworld';
 mdx.sync(code, { compilers: [createCompiler()] });
 ```
 
+## Loader
+
+In addition, this library supports a simple Webpack loader that mirrors MDXv1's loader, but adds Webpack5 support.
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(stories|story)\.mdx$/,
+        use: [
+          {
+            loader: require.resolve('@storybook/mdx1-csf/loader'),
+            options: {},
+          },
+        ],
+      },
+    ],
+  },
+};
+```
+
 ## Contributing
 
 We welcome contributions to Storybook!
