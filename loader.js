@@ -1,10 +1,11 @@
 const { getOptions } = require('loader-utils');
 const mdx = require('@mdx-js/mdx');
+const mdxReact = require.resolve('@mdx-js/react');
 const { createCompiler } = require('./dist/cjs');
 
 const DEFAULT_RENDERER = `
 import React from 'react'
-import { mdx } from '@mdx-js/react'
+import { mdx } from '${mdxReact}'
 `;
 
 // Lifted from MDXv1 loader
