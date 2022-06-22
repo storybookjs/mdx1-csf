@@ -14,6 +14,7 @@ export interface MdxOptions {
   wrapExport?: string;
   remarkPlugins?: any[];
   rehypePlugins?: any[];
+  skipCsf?: boolean;
 }
 
 interface CompilerOptions {
