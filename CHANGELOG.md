@@ -1,3 +1,15 @@
+# v0.0.4 (Sat Jun 25 2022)
+
+#### 🐛 Bug Fix
+
+- Fix skipCsf support in compile functions [#12](https://github.com/storybookjs/mdx1-csf/pull/12) ([@joshwooding](https://github.com/joshwooding))
+
+#### Authors: 1
+
+- Josh Wooding ([@joshwooding](https://github.com/joshwooding))
+
+---
+
 # v0.0.3 (Wed Jun 22 2022)
 
 #### 🐛 Bug Fix
