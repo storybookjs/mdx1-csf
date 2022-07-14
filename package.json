@@ -36,6 +36,7 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@babel/core": "^7.12.3",
     "@babel/generator": "^7.12.11",
     "@babel/parser": "^7.12.11",
     "@babel/preset-env": "^7.12.11",
@@ -52,7 +53,6 @@
   "devDependencies": {
     "@auto-it/released": "^10.32.6",
     "@babel/cli": "^7.12.1",
-    "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.5",
     "@babel/preset-typescript": "^7.13.0",
