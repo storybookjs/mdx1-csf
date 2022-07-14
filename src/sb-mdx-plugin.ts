@@ -356,13 +356,11 @@ function getExports(node: Element, context: Context, options: CompilerOptions) {
   return null;
 }
 
-// insert `mdxStoryNameToKey` and `mdxComponentMeta` into the context so that we
-// can reconstruct the Story ID dynamically from the `name` at render time
 export const wrapperJs = `
 componentMeta.parameters = componentMeta.parameters || {};
 componentMeta.parameters.docs = {
   ...(componentMeta.parameters.docs || {}),
-  page: () => <AddContext mdxStoryNameToKey={mdxStoryNameToKey} mdxComponentAnnotations={componentMeta}><MDXContent /></AddContext>,
+  page: () => <MDXContent />,
 };
 `.trim();
 
@@ -505,13 +503,12 @@ function extractExports(root: Element, options: CompilerOptions) {
 
   const defaultJsx = toJSX(root, {}, { ...options, skipExport: true });
   const fullJsx = [
-    'import { assertIsFn, AddContext } from "@storybook/addon-docs";',
+    'import { assertIsFn } from "@storybook/addon-docs";',
     defaultJsx,
     ...storyExports,
     `const componentMeta = ${stringifyMeta(metaExport)};`,
-    `const mdxStoryNameToKey = ${JSON.stringify(context.storyNameToKey)};`,
     wrapperJs,
-    'export default componentMeta;',
+    'export default  ${stringifyMeta(metaExport)};;',
   ].join('\n\n');
 
   return fullJsx;
