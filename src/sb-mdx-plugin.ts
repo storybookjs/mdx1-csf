@@ -508,7 +508,7 @@ function extractExports(root: Element, options: CompilerOptions) {
     ...storyExports,
     `const componentMeta = ${stringifyMeta(metaExport)};`,
     wrapperJs,
-    'export default  ${stringifyMeta(metaExport)};;',
+    'export default componentMeta;',
   ].join('\n\n');
 
   return fullJsx;
