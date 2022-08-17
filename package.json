@@ -20,8 +20,8 @@
   "scripts": {
     "clean": "rimraf ./dist",
     "buildBabel": "IGNORE_FILES=true concurrently \"yarn buildBabel:cjs\" \"yarn buildBabel:esm\"",
-    "buildBabel:cjs": "babel ./src -d ./dist/cjs --extensions \".js,.jsx,.ts,.tsx\"",
-    "buildBabel:esm": "babel ./src -d ./dist/esm --env-name esm --extensions \".js,.jsx,.ts,.tsx\"",
+    "buildBabel:cjs": "babel ./src -d ./dist/cjs --extensions \".js,.jsx,.ts,.tsx,.css\"",
+    "buildBabel:esm": "babel ./src -d ./dist/esm --env-name esm --extensions \".js,.jsx,.ts,.tsx,.css\"",
     "buildTsc": "tsc --declaration --emitDeclarationOnly --outDir ./dist/ts",
     "prebuild": "yarn clean",
     "build": "concurrently \"yarn buildBabel\" \"yarn buildTsc\"",
