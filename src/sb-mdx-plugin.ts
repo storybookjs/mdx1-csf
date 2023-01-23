@@ -319,6 +319,7 @@ function genMeta(ast: t.JSXElement, options: CompilerOptions) {
     args,
     argTypes,
     render,
+    tags: "['stories-mdx']",
   };
 }
 
