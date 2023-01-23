@@ -4,6 +4,8 @@ import * as t from '@babel/types';
 import _generate from '@babel/generator';
 import camelCase from 'lodash/camelCase';
 import jsStringEscape from 'js-string-escape';
+import { transformJSXSync } from './jsx';
+import { JSXOptions } from './types';
 
 const generate = (node: any, context: any) => _generate(node, context);
 
@@ -15,6 +17,7 @@ export interface MdxOptions {
   remarkPlugins?: any[];
   rehypePlugins?: any[];
   skipCsf?: boolean;
+  jsxOptions?: JSXOptions;
 }
 
 interface CompilerOptions {
@@ -519,6 +522,9 @@ function extractExports(root: Element, options: CompilerOptions) {
 
 export function createCompiler(mdxOptions: MdxOptions) {
   return function compiler(options: CompilerOptions = {}) {
-    this.Compiler = (root: Element) => extractExports(root, options);
+    this.Compiler = (root: Element) => {
+      const output = extractExports(root, options);
+      return mdxOptions.jsxOptions ? transformJSXSync(output, mdxOptions.jsxOptions) : output;
+    };
   };
 }
