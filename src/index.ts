@@ -1,10 +1,17 @@
 import mdx from '@mdx-js/mdx';
 import { createCompiler, MdxOptions } from './sb-mdx-plugin';
 
-export const compile = async (code: string, options?: MdxOptions) =>
-  mdx(code, { compilers: options?.skipCsf ? [] : [createCompiler(options)] });
+import type { CompileOptions, MdxCompileOptions, JSXOptions } from './types';
+import { transformJSXAsync, transformJSXSync } from './jsx';
 
-export const compileSync = (code: string, options?: MdxOptions) =>
-  mdx.sync(code, { compilers: options?.skipCsf ? [] : [createCompiler(options)] });
+export type { CompileOptions, MdxCompileOptions, JSXOptions };
 
-export * from './sb-mdx-plugin';
+export const compile = async (code: string, options?: MdxOptions) => {
+  const result = await mdx(code, { compilers: options?.skipCsf ? [] : [createCompiler(options)] });
+  return transformJSXAsync(result, options?.jsxOptions);
+};
+
+export const compileSync = (code: string, options?: MdxOptions) => {
+  const result = mdx.sync(code, { compilers: options?.skipCsf ? [] : [createCompiler(options)] });
+  return transformJSXSync(result, options?.jsxOptions);
+};

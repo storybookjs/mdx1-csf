@@ -30,6 +30,24 @@ function clean(content: any) {
     .trim();
 }
 
+function compile(content: any) {
+  const code = mdx.sync(content, {
+    // filepath: filePath,
+    compilers: [createCompiler({})],
+  });
+
+  return prettier
+    .format(code, {
+      parser: 'babel',
+      printWidth: 100,
+      tabWidth: 2,
+      bracketSpacing: true,
+      trailingComma: 'es5',
+      singleQuote: true,
+    })
+    .trim();
+}
+
 const fixturesDir = path.join(__dirname, '..', '..', '__testfixtures__', 'mdx');
 
 const snap = (prefix: string) => path.join(fixturesDir, `${prefix}.output.snapshot`);
@@ -68,6 +86,7 @@ describe('docs-mdx-compiler-plugin', () => {
             name: 'B',
           },
         },
+        tags: ['stories-mdx'],
         includeStories: ['componentNotes'],
       };
 
@@ -96,6 +115,7 @@ describe('docs-mdx-compiler-plugin', () => {
         title: 'Button',
         id: 'button-id',
         component: Button,
+        tags: ['stories-mdx'],
         includeStories: ['componentNotes'],
       };
 
@@ -131,7 +151,11 @@ describe('docs-mdx-compiler-plugin', () => {
       export const _Foo_ = MyStories.Foo;
       _Foo_.storyName = 'renamed';
 
-      const componentMeta = { title: 'MDX/CSF imports', includeStories: ['_Basic_', '_Other_', '_Foo_'] };
+      const componentMeta = {
+        title: 'MDX/CSF imports',
+        tags: ['stories-mdx'],
+        includeStories: ['_Basic_', '_Other_', '_Foo_'],
+      };
 
       const mdxStoryNameToKey = { _Basic_: '_Basic_', _Other_: '_Other_', renamed: '_Foo_' };
     `);
@@ -173,6 +197,7 @@ describe('docs-mdx-compiler-plugin', () => {
             </div>
           ),
         ],
+        tags: ['stories-mdx'],
         includeStories: ['one'],
       };
 
@@ -198,7 +223,7 @@ describe('docs-mdx-compiler-plugin', () => {
 
       __page.parameters = { docsOnly: true };
 
-      const componentMeta = { title: 'docs-only', includeStories: ['__page'] };
+      const componentMeta = { title: 'docs-only', tags: ['stories-mdx'], includeStories: ['__page'] };
 
       const mdxStoryNameToKey = {};
     `);
@@ -235,6 +260,7 @@ describe('docs-mdx-compiler-plugin', () => {
             foo: 1,
           }),
         ],
+        tags: ['stories-mdx'],
         includeStories: ['one'],
       };
 
@@ -256,7 +282,11 @@ describe('docs-mdx-compiler-plugin', () => {
 
       __page.parameters = { docsOnly: true };
 
-      const componentMeta = { title: "Addons/Docs/what's in a title?", includeStories: ['__page'] };
+      const componentMeta = {
+        title: "Addons/Docs/what's in a title?",
+        tags: ['stories-mdx'],
+        includeStories: ['__page'],
+      };
 
       const mdxStoryNameToKey = {};
     `);
@@ -291,7 +321,11 @@ describe('docs-mdx-compiler-plugin', () => {
       helloStory.storyName = 'hello story';
       helloStory.parameters = { storySource: { source: '<Button>Hello button</Button>' } };
 
-      const componentMeta = { title: 'Button', includeStories: ['one', 'helloStory'] };
+      const componentMeta = {
+        title: 'Button',
+        tags: ['stories-mdx'],
+        includeStories: ['one', 'helloStory'],
+      };
 
       const mdxStoryNameToKey = { one: 'one', 'hello story': 'helloStory' };
     `);
@@ -333,6 +367,7 @@ describe('docs-mdx-compiler-plugin', () => {
           notes: 'component notes',
         },
         component: Button,
+        tags: ['stories-mdx'],
         includeStories: ['componentNotes', 'storyNotes'],
       };
 
@@ -384,6 +419,7 @@ describe('docs-mdx-compiler-plugin', () => {
           notes: 'component notes',
         },
         component: Button,
+        tags: ['stories-mdx'],
         includeStories: ['helloButton', 'two'],
       };
 
@@ -428,7 +464,11 @@ describe('docs-mdx-compiler-plugin', () => {
       };
       componentNotes.parameters = { storySource: { source: 'args => <Button>Component notes</Button>' } };
 
-      const componentMeta = { title: 'Button', includeStories: ['componentNotes'] };
+      const componentMeta = {
+        title: 'Button',
+        tags: ['stories-mdx'],
+        includeStories: ['componentNotes'],
+      };
 
       const mdxStoryNameToKey = { 'component notes': 'componentNotes' };
     `);
@@ -466,7 +506,7 @@ describe('docs-mdx-compiler-plugin', () => {
       text.storyName = 'text';
       text.parameters = { storySource: { source: "'Plain text'" } };
 
-      const componentMeta = { title: 'Text', includeStories: ['text'] };
+      const componentMeta = { title: 'Text', tags: ['stories-mdx'], includeStories: ['text'] };
 
       const mdxStoryNameToKey = { text: 'text' };
     `);
@@ -517,6 +557,7 @@ describe('docs-mdx-compiler-plugin', () => {
 
       const componentMeta = {
         title: 'Button',
+        tags: ['stories-mdx'],
         includeStories: ['one', 'helloStory', 'wPunctuation', '_1FineDay'],
       };
 
@@ -549,7 +590,11 @@ describe('docs-mdx-compiler-plugin', () => {
       basic.storyName = 'basic';
       basic.parameters = { storySource: { source: 'basicFn' } };
 
-      const componentMeta = { title: 'story-function-var', includeStories: ['basic'] };
+      const componentMeta = {
+        title: 'story-function-var',
+        tags: ['stories-mdx'],
+        includeStories: ['basic'],
+      };
 
       const mdxStoryNameToKey = { basic: 'basic' };
     `);
@@ -614,7 +659,11 @@ describe('docs-mdx-compiler-plugin', () => {
         storySource: { source: '<p>Hello Child #1</p>\\n<p>Hello Child #2</p>' },
       };
 
-      const componentMeta = { title: 'Multiple', includeStories: ['multipleChildren'] };
+      const componentMeta = {
+        title: 'Multiple',
+        tags: ['stories-mdx'],
+        includeStories: ['multipleChildren'],
+      };
 
       const mdxStoryNameToKey = { 'multiple children': 'multipleChildren' };
     `);
@@ -661,7 +710,11 @@ describe('docs-mdx-compiler-plugin', () => {
         },
       };
 
-      const componentMeta = { title: 'MDX|Welcome', includeStories: ['toStorybook'] };
+      const componentMeta = {
+        title: 'MDX|Welcome',
+        tags: ['stories-mdx'],
+        includeStories: ['toStorybook'],
+      };
 
       const mdxStoryNameToKey = { 'to storybook': 'toStorybook' };
     `);
@@ -701,7 +754,11 @@ describe('docs-mdx-compiler-plugin', () => {
 
       __page.parameters = { docsOnly: true };
 
-      const componentMeta = { title: \`\${titleFunction('template')}\`, includeStories: ['__page'] };
+      const componentMeta = {
+        title: \`\${titleFunction('template')}\`,
+        tags: ['stories-mdx'],
+        includeStories: ['__page'],
+      };
 
       const mdxStoryNameToKey = {};
     `);
@@ -778,7 +835,7 @@ describe('docs-mdx-compiler-plugin', () => {
         basic.storyName = 'Basic';
         basic.parameters = { storySource: { source: '<Button>Basic</Button>' } };
 
-        const componentMeta = { component: Button, includeStories: ['basic'] };
+        const componentMeta = { component: Button, tags: ['stories-mdx'], includeStories: ['basic'] };
 
         const mdxStoryNameToKey = { Basic: 'basic' };
       `);
@@ -799,7 +856,12 @@ describe('docs-mdx-compiler-plugin', () => {
         basic.storyName = 'Basic';
         basic.parameters = { storySource: { source: '{}' } };
 
-        const componentMeta = { title: 'Button', component: Button, includeStories: ['basic'] };
+        const componentMeta = {
+          title: 'Button',
+          component: Button,
+          tags: ['stories-mdx'],
+          includeStories: ['basic'],
+        };
 
         const mdxStoryNameToKey = { Basic: 'basic' };
       `);
@@ -824,6 +886,7 @@ describe('docs-mdx-compiler-plugin', () => {
           title: 'Button',
           component: Button,
           render: (args) => <Button {...args} />,
+          tags: ['stories-mdx'],
           includeStories: ['basic'],
         };
 
@@ -847,7 +910,12 @@ describe('docs-mdx-compiler-plugin', () => {
         basic.parameters = { storySource: { source: '{}' } };
         basic.render = (args) => <Button {...args} />;
 
-        const componentMeta = { title: 'Button', component: Button, includeStories: ['basic'] };
+        const componentMeta = {
+          title: 'Button',
+          component: Button,
+          tags: ['stories-mdx'],
+          includeStories: ['basic'],
+        };
 
         const mdxStoryNameToKey = { Basic: 'basic' };
       `);
@@ -869,10 +937,84 @@ describe('docs-mdx-compiler-plugin', () => {
         basic.parameters = { storySource: { source: '{}' } };
         basic.play = () => console.log('play');
 
-        const componentMeta = { title: 'Button', component: Button, includeStories: ['basic'] };
+        const componentMeta = {
+          title: 'Button',
+          component: Button,
+          tags: ['stories-mdx'],
+          includeStories: ['basic'],
+        };
 
         const mdxStoryNameToKey = { Basic: 'basic' };
       `);
     });
+  });
+
+  it('MDX1 syntax', () => {
+    expect(
+      compile(dedent`
+        import { Meta } from '@storybook/addon-docs';
+
+        <Meta title="docs-only" />
+
+        <style>{\`
+          .subheading {
+            --mediumdark: '#999999';
+          }
+        \`}</style>
+
+        <!-- This is a comment -->
+
+        # Documentation only
+
+        This is a documentation-only MDX file which cleans a dummy 'docsOnly: true' story.
+      `)
+    ).toMatchInlineSnapshot(`
+      /* @jsxRuntime classic */
+      /* @jsx mdx */
+      import { assertIsFn, AddContext } from '@storybook/addon-docs';
+
+      import { Meta } from '@storybook/addon-docs';
+
+      const layoutProps = {};
+      const MDXLayout = 'wrapper';
+      function MDXContent({ components, ...props }) {
+        return (
+          <MDXLayout {...layoutProps} {...props} components={components} mdxType="MDXLayout">
+            <Meta title="docs-only" mdxType="Meta" />
+            <style>{\`
+        .subheading {
+          --mediumdark: '#999999';
+        }
+      \`}</style>
+            {/* This is a comment */}
+            <h1>{\`Documentation only\`}</h1>
+            <p>{\`This is a documentation-only MDX file which cleans a dummy 'docsOnly: true' story.\`}</p>
+          </MDXLayout>
+        );
+      }
+      MDXContent.isMDXComponent = true;
+
+      export const __page = () => {
+        throw new Error('Docs-only story');
+      };
+
+      __page.parameters = { docsOnly: true };
+
+      const componentMeta = { title: 'docs-only', tags: ['stories-mdx'], includeStories: ['__page'] };
+
+      const mdxStoryNameToKey = {};
+
+      componentMeta.parameters = componentMeta.parameters || {};
+      componentMeta.parameters.docs = {
+        ...(componentMeta.parameters.docs || {}),
+        page: () => (
+          <AddContext mdxStoryNameToKey={mdxStoryNameToKey} mdxComponentAnnotations={componentMeta}>
+            <MDXContent />
+          </AddContext>
+        ),
+      };
+
+      export default componentMeta;
+    `);
   });
 });
