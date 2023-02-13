@@ -31,10 +31,13 @@ function clean(content: any) {
 }
 
 function compile(content: any) {
-  const code = mdx.sync(content, {
-    // filepath: filePath,
-    compilers: [createCompiler({})],
-  });
+  const code = mdx
+    .sync(content, {
+      // filepath: filePath,
+      compilers: [createCompiler({})],
+    })
+    // sanitize resolved path so test is same on any machine
+    .replace(/import { mdx } from (.*)/, "import { mdx } from '@mdx-js/react';");
 
   return prettier
     .format(code, {
@@ -971,6 +974,7 @@ describe('docs-mdx-compiler-plugin', () => {
     ).toMatchInlineSnapshot(`
       /* @jsxRuntime classic */
       /* @jsx mdx */
+      import { mdx } from '@mdx-js/react';
       import { assertIsFn, AddContext } from '@storybook/addon-docs';
 
       import { Meta } from '@storybook/addon-docs';
