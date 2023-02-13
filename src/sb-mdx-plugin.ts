@@ -1,3 +1,4 @@
+import { dirname } from 'path';
 import { toJSX } from '@mdx-js/mdx/mdx-hast-to-jsx';
 import { parse, parseExpression } from '@babel/parser';
 import * as t from '@babel/types';
@@ -508,8 +509,10 @@ function extractExports(root: Element, options: CompilerOptions) {
   metaExport.includeStories = JSON.stringify(includeStories);
 
   const defaultJsx = toJSX(root, {}, { ...options, skipExport: true });
+  const mdxReactPackage = dirname(require.resolve('@mdx-js/react/package.json'));
   const fullJsx = [
-    'import { assertIsFn, AddContext } from "@storybook/addon-docs";',
+    `import { mdx } from '${mdxReactPackage}';
+     import { assertIsFn, AddContext } from "@storybook/addon-docs";`,
     defaultJsx,
     ...storyExports,
     `const componentMeta = ${stringifyMeta(metaExport)};`,

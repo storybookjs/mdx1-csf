@@ -1,4 +1,3 @@
-const { dirname } = require('path');
 const { compile } = require('./dist/index');
 
 // FIXME: we shouldn't be doing this, but we need it
@@ -9,10 +8,8 @@ const { compile } = require('./dist/index');
 // Which generates the code:
 //
 // export const foo = () => <div>hi</div>;
-const mdxReactPackage = dirname(require.resolve('@mdx-js/react/package.json'));
 const DEFAULT_RENDERER = `
 import React from 'react';
-import { mdx } from '${mdxReactPackage}';
 `;
 
 // Lifted from MDXv1 loader
