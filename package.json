@@ -46,7 +46,7 @@
     "@storybook/addon-links": "^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0",
     "@storybook/react": "^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0",
     "@storybook/react-webpack5": "^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0",
-    "@storybook/testing-library": "^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0",
+    "@storybook/testing-library": "next",
     "@testing-library/dom": "^8.1.0",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
