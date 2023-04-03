@@ -1,9 +1,12 @@
+import { dirname } from 'path';
 import { toJSX } from '@mdx-js/mdx/mdx-hast-to-jsx';
 import { parse, parseExpression } from '@babel/parser';
 import * as t from '@babel/types';
 import _generate from '@babel/generator';
 import camelCase from 'lodash/camelCase';
 import jsStringEscape from 'js-string-escape';
+import { transformJSXSync } from './jsx';
+import { JSXOptions } from './types';
 
 const generate = (node: any, context: any) => _generate(node, context);
 
@@ -15,6 +18,7 @@ export interface MdxOptions {
   remarkPlugins?: any[];
   rehypePlugins?: any[];
   skipCsf?: boolean;
+  jsxOptions?: JSXOptions;
 }
 
 interface CompilerOptions {
@@ -131,6 +135,11 @@ const expressionOrNull = (attr: t.JSXAttribute['value']) =>
   t.isJSXExpressionContainer(attr) ? attr.expression : null;
 
 function genStoryExport(ast: t.JSXElement, context: Context) {
+  if (getAttr(ast.openingElement, 'of')) {
+    throw new Error(`The 'of' prop is not supported in .stories.mdx files, only .mdx files.
+    See https://storybook.js.org/docs/7.0/react/writing-docs/mdx on how to write MDX files and stories separately.`);
+  }
+
   const storyName = idOrNull(getAttr(ast.openingElement, 'name'));
   const storyId = idOrNull(getAttr(ast.openingElement, 'id'));
   const storyRef = getAttr(ast.openingElement, 'story') as t.JSXExpressionContainer;
@@ -273,6 +282,11 @@ function genCanvasExports(ast: t.JSXElement, context: Context) {
 }
 
 function genMeta(ast: t.JSXElement, options: CompilerOptions) {
+  if (getAttr(ast.openingElement, 'of')) {
+    throw new Error(`The 'of' prop is not supported in .stories.mdx files, only .mdx files.
+    See https://storybook.js.org/docs/7.0/react/writing-docs/mdx on how to write MDX files and stories separately.`);
+  }
+
   const titleAttr = getAttr(ast.openingElement, 'title');
   const idAttr = getAttr(ast.openingElement, 'id');
   let title = null;
@@ -316,6 +330,7 @@ function genMeta(ast: t.JSXElement, options: CompilerOptions) {
     args,
     argTypes,
     render,
+    tags: "['stories-mdx']",
   };
 }
 
@@ -504,8 +519,10 @@ function extractExports(root: Element, options: CompilerOptions) {
   metaExport.includeStories = JSON.stringify(includeStories);
 
   const defaultJsx = toJSX(root, {}, { ...options, skipExport: true });
+  const mdxReactPackage = dirname(require.resolve('@mdx-js/react/package.json'));
   const fullJsx = [
-    'import { assertIsFn, AddContext } from "@storybook/addon-docs";',
+    `import { mdx } from '${mdxReactPackage}';
+     import { assertIsFn, AddContext } from "@storybook/addon-docs";`,
     defaultJsx,
     ...storyExports,
     `const componentMeta = ${stringifyMeta(metaExport)};`,
@@ -519,6 +536,9 @@ function extractExports(root: Element, options: CompilerOptions) {
 
 export function createCompiler(mdxOptions: MdxOptions) {
   return function compiler(options: CompilerOptions = {}) {
-    this.Compiler = (root: Element) => extractExports(root, options);
+    this.Compiler = (root: Element) => {
+      const output = extractExports(root, options);
+      return mdxOptions.jsxOptions ? transformJSXSync(output, mdxOptions.jsxOptions) : output;
+    };
   };
 }

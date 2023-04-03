@@ -1,12 +1,7 @@
-const { createCompiler } = require('../dist/cjs');
 module.exports = {
-  stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
-  addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
-  ],
-  framework: '@storybook/react',
+  stories: ['../stories/**/*.stories.mdx', '../stories/**/*.stories.@(js|jsx|ts|tsx)'],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
+  framework: '@storybook/react-webpack5',
   webpackFinal: async (config) => {
     const rules = (config.module.rules || []).filter(
       (rule) => !rule.test?.toString().endsWith('\\.mdx$/')
@@ -26,6 +21,9 @@ module.exports = {
         },
         {
           loader: require.resolve('../loader'),
+          options: {
+            mdxCompileOptions: {},
+          },
         },
       ],
     });
