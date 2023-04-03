@@ -1,3 +1,25 @@
+# v1.0.0 (Mon Apr 03 2023)
+
+#### 💥 Breaking Change
+
+- Update to 7.0 / mdx2-csf structure [#19](https://github.com/storybookjs/mdx1-csf/pull/19) ([@shilman](https://github.com/shilman))
+
+#### 🐛 Bug Fix
+
+- Upgrade to SB7.0 [#22](https://github.com/storybookjs/mdx1-csf/pull/22) ([@shilman](https://github.com/shilman))
+- Throw descriptive error when 'of' prop is detected [#21](https://github.com/storybookjs/mdx1-csf/pull/21) ([@JReinhold](https://github.com/JReinhold))
+- Move mdx import out of loader into compile [#20](https://github.com/storybookjs/mdx1-csf/pull/20) ([@shilman](https://github.com/shilman))
+- ReDoS attack patch [#17](https://github.com/storybookjs/mdx1-csf/pull/17) ([@iarmbears](https://github.com/iarmbears))
+
+#### Authors: 4
+
+- [@iarmbears](https://github.com/iarmbears)
+- Jeppe Reinhold ([@JReinhold](https://github.com/JReinhold))
+- Michael Shilman ([@shilman](https://github.com/shilman))
+- Norbert de Langen ([@ndelangen](https://github.com/ndelangen))
+
+---
+
 # v0.0.4 (Sat Jun 25 2022)
 
 #### 🐛 Bug Fix
