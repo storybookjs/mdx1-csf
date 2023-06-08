@@ -7,6 +7,7 @@ import camelCase from 'lodash/camelCase';
 import jsStringEscape from 'js-string-escape';
 import { transformJSXSync } from './jsx';
 import { JSXOptions } from './types';
+import slash from 'slash';
 
 const generate = (node: any, context: any) => _generate(node, context);
 
@@ -521,7 +522,7 @@ function extractExports(root: Element, options: CompilerOptions) {
   const defaultJsx = toJSX(root, {}, { ...options, skipExport: true });
   const mdxReactPackage = dirname(require.resolve('@mdx-js/react/package.json'));
   const fullJsx = [
-    `import { mdx } from '${mdxReactPackage}';
+    `import { mdx } from '${slash(mdxReactPackage)}';
      import { assertIsFn, AddContext } from "@storybook/addon-docs";`,
     defaultJsx,
     ...storyExports,
